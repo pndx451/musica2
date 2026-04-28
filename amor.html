@@ -1,0 +1,1072 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>4 Meses Juntos 💕</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Dancing+Script:wght@400;600;700&family=Lato:wght@300;400&display=swap');
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --pink: #ff6b9d;
+      --rose: #ff4d7e;
+      --blush: #ffd6e7;
+      --deep: #c2185b;
+      --soft: #fff0f6;
+      --gold: #ffcc80;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      min-height: 100vh;
+      background: linear-gradient(135deg, #1a0012 0%, #2d0035 40%, #1a0020 70%, #0d001a 100%);
+      font-family: 'Lato', sans-serif;
+      overflow-x: hidden;
+      color: white;
+    }
+
+    /* ── CANVAS DE PARTÍCULAS ── */
+    #particles { position: fixed; inset: 0; pointer-events: none; z-index: 0; }
+
+    /* ── CORAZONES FLOTANTES ── */
+    .floating-hearts { position: fixed; inset: 0; pointer-events: none; z-index: 1; overflow: hidden; }
+    .fheart {
+      position: absolute;
+      bottom: -60px;
+      font-size: 1.4rem;
+      animation: floatUp linear infinite;
+      opacity: 0;
+      user-select: none;
+    }
+    @keyframes floatUp {
+      0%   { transform: translateY(0) rotate(0deg) scale(0.8); opacity: 0; }
+      10%  { opacity: 0.8; }
+      90%  { opacity: 0.6; }
+      100% { transform: translateY(-110vh) rotate(360deg) scale(1.2); opacity: 0; }
+    }
+
+    /* ── DESTELLOS ── */
+    .sparkle {
+      position: fixed;
+      width: 4px; height: 4px;
+      border-radius: 50%;
+      background: white;
+      pointer-events: none;
+      z-index: 1;
+      animation: sparkleAnim ease-in-out infinite;
+    }
+    @keyframes sparkleAnim {
+      0%, 100% { transform: scale(0); opacity: 0; }
+      50%       { transform: scale(1); opacity: 1; }
+    }
+
+    /* ── CONTENEDOR PRINCIPAL ── */
+    .page { position: relative; z-index: 2; }
+
+    /* ── HERO ── */
+    .hero {
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 2rem;
+      position: relative;
+    }
+
+    .crown {
+      font-size: 3rem;
+      animation: crownBounce 2s ease-in-out infinite;
+      margin-bottom: 0.5rem;
+    }
+    @keyframes crownBounce {
+      0%, 100% { transform: translateY(0) rotate(-5deg); }
+      50%       { transform: translateY(-12px) rotate(5deg); }
+    }
+
+    .hero-subtitle {
+      font-family: 'Lato', sans-serif;
+      font-weight: 300;
+      font-size: clamp(0.9rem, 2.5vw, 1.1rem);
+      letter-spacing: 0.4em;
+      text-transform: uppercase;
+      color: var(--blush);
+      opacity: 0;
+      animation: fadeSlideDown 1s ease 0.3s forwards;
+      margin-bottom: 1rem;
+    }
+
+    .hero-title {
+      font-family: 'Dancing Script', cursive;
+      font-size: clamp(3.5rem, 12vw, 8rem);
+      font-weight: 700;
+      line-height: 1;
+      background: linear-gradient(135deg, #ff6b9d, #ffcc80, #ff4d7e, #c2185b);
+      background-size: 300%;
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      animation: gradientShift 4s ease infinite, fadeSlideUp 1s ease 0.6s both;
+      margin-bottom: 1.5rem;
+    }
+    @keyframes gradientShift {
+      0%, 100% { background-position: 0% 50%; }
+      50%       { background-position: 100% 50%; }
+    }
+
+    .big-heart {
+      font-size: clamp(4rem, 15vw, 9rem);
+      animation: heartbeat 1.4s ease-in-out infinite;
+      display: block;
+      margin: 1rem auto;
+      filter: drop-shadow(0 0 30px #ff4d7e88);
+    }
+    @keyframes heartbeat {
+      0%, 100% { transform: scale(1); }
+      14%       { transform: scale(1.18); }
+      28%       { transform: scale(1); }
+      42%       { transform: scale(1.12); }
+      70%       { transform: scale(1); }
+    }
+
+    .hero-tagline {
+      font-family: 'Dancing Script', cursive;
+      font-size: clamp(1.2rem, 4vw, 2rem);
+      color: var(--blush);
+      opacity: 0;
+      animation: fadeSlideUp 1s ease 1.2s forwards;
+    }
+
+    .scroll-hint {
+      position: absolute;
+      bottom: 2rem;
+      left: 50%;
+      transform: translateX(-50%);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 0.4rem;
+      opacity: 0;
+      animation: fadeIn 1s ease 2s forwards;
+      font-size: 0.75rem;
+      letter-spacing: 0.2em;
+      color: var(--blush);
+      text-transform: uppercase;
+    }
+    .scroll-arrow {
+      width: 22px; height: 22px;
+      border-right: 2px solid var(--pink);
+      border-bottom: 2px solid var(--pink);
+      transform: rotate(45deg);
+      animation: scrollBounce 1.2s ease-in-out infinite;
+    }
+    @keyframes scrollBounce {
+      0%, 100% { transform: rotate(45deg) translateY(0); }
+      50%       { transform: rotate(45deg) translateY(6px); }
+    }
+
+    /* ── CONTADOR ── */
+    .counter-section {
+      padding: 5rem 2rem;
+      text-align: center;
+    }
+    .section-title {
+      font-family: 'Dancing Script', cursive;
+      font-size: clamp(2rem, 6vw, 3.5rem);
+      color: var(--pink);
+      margin-bottom: 3rem;
+      opacity: 0;
+      transform: translateY(40px);
+      transition: opacity 0.8s ease, transform 0.8s ease;
+    }
+    .section-title.visible { opacity: 1; transform: translateY(0); }
+
+    .counters {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 2rem;
+    }
+    .counter-card {
+      background: rgba(255,107,157,0.1);
+      border: 1px solid rgba(255,107,157,0.3);
+      border-radius: 20px;
+      padding: 2rem 2.5rem;
+      min-width: 140px;
+      backdrop-filter: blur(10px);
+      opacity: 0;
+      transform: scale(0.8);
+      transition: opacity 0.6s ease, transform 0.6s ease, box-shadow 0.3s ease;
+    }
+    .counter-card.visible { opacity: 1; transform: scale(1); }
+    .counter-card:hover { box-shadow: 0 0 30px rgba(255,107,157,0.4); transform: scale(1.05) translateY(-5px); }
+
+    .counter-num {
+      font-family: 'Dancing Script', cursive;
+      font-size: 3.5rem;
+      font-weight: 700;
+      color: var(--gold);
+      display: block;
+      line-height: 1;
+    }
+    .counter-label {
+      font-size: 0.85rem;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--blush);
+      margin-top: 0.5rem;
+    }
+
+    /* ── RAZONES ── */
+    .reasons-section { padding: 5rem 2rem; }
+    .reasons-grid {
+      display: flex;
+      flex-direction: column;
+      gap: 1.5rem;
+      max-width: 680px;
+      margin: 0 auto;
+    }
+    .reason-card {
+      background: rgba(255,255,255,0.04);
+      border: 1px solid rgba(255,107,157,0.2);
+      border-radius: 16px;
+      padding: 1.5rem 2rem;
+      display: flex;
+      align-items: flex-start;
+      gap: 1.2rem;
+      opacity: 0;
+      transform: translateX(-40px);
+      transition: opacity 0.7s ease, transform 0.7s ease, background 0.3s ease;
+      backdrop-filter: blur(6px);
+    }
+    .reason-card.from-right { transform: translateX(40px); }
+    .reason-card.visible { opacity: 1; transform: translateX(0); }
+    .reason-card:hover { background: rgba(255,107,157,0.1); }
+
+    .reason-emoji { font-size: 2rem; flex-shrink: 0; }
+    .reason-text { font-size: 1rem; line-height: 1.6; color: #f0d0e0; }
+    .reason-text strong { color: var(--pink); font-size: 1.05rem; }
+
+    /* ── TARJETAS FLIP ── */
+    .moments-section { padding: 5rem 2rem; text-align: center; }
+    .moments-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1.4rem;
+      max-width: 740px;
+      margin: 0 auto;
+    }
+    @media (max-width: 560px) {
+      .moments-grid { grid-template-columns: repeat(2, 1fr); }
+    }
+
+    .flip-card {
+      perspective: 900px;
+      height: 175px;
+      cursor: pointer;
+      opacity: 0;
+      transform: translateY(30px);
+      transition: opacity 0.55s ease, transform 0.55s ease;
+    }
+    .flip-card.visible { opacity: 1; transform: translateY(0); }
+
+    .flip-inner {
+      width: 100%; height: 100%;
+      position: relative;
+      transform-style: preserve-3d;
+      transition: transform 0.65s cubic-bezier(0.4, 0.2, 0.2, 1);
+    }
+    .flip-card:hover .flip-inner,
+    .flip-card.flipped .flip-inner { transform: rotateY(180deg); }
+
+    .flip-front, .flip-back {
+      position: absolute;
+      inset: 0;
+      border-radius: 20px;
+      backface-visibility: hidden;
+      -webkit-backface-visibility: hidden;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 1.2rem;
+      border: 1px solid rgba(255,107,157,0.22);
+      backdrop-filter: blur(12px);
+    }
+    .flip-front {
+      background: rgba(255,255,255,0.04);
+      gap: 0.7rem;
+    }
+    .flip-front .fc-emoji {
+      font-size: 2.8rem;
+      filter: drop-shadow(0 4px 14px rgba(255,107,157,0.5));
+      transition: transform 0.3s;
+    }
+    .flip-card:hover .flip-front .fc-emoji { transform: scale(1.1); }
+    .flip-front .fc-title {
+      font-family: 'Dancing Script', cursive;
+      font-size: 1.2rem;
+      color: white;
+      letter-spacing: 0.03em;
+    }
+    .flip-front .fc-hint {
+      font-size: 0.6rem;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: rgba(255,214,231,0.45);
+    }
+
+    .flip-back {
+      background: var(--fc-bg, rgba(255,77,126,0.16));
+      border-color: var(--fc-border, rgba(255,107,157,0.5));
+      transform: rotateY(180deg);
+      gap: 0.6rem;
+      text-align: center;
+      box-shadow: inset 0 0 40px rgba(0,0,0,0.15);
+    }
+    .flip-back .fc-back-emoji { font-size: 1.9rem; }
+    .flip-back .fc-desc {
+      font-size: 0.8rem;
+      color: var(--blush);
+      line-height: 1.55;
+    }
+    .flip-back .fc-desc em { color: white; font-style: normal; font-weight: 600; }
+
+    /* accent por tarjeta */
+    .flip-card:nth-child(1) { --fc-bg: rgba(255,107,157,0.18); --fc-border: rgba(255,107,157,0.6); }
+    .flip-card:nth-child(2) { --fc-bg: rgba(255,140,60,0.18);  --fc-border: rgba(255,160,80,0.6); }
+    .flip-card:nth-child(3) { --fc-bg: rgba(140,80,255,0.18);  --fc-border: rgba(160,100,255,0.6); }
+    .flip-card:nth-child(4) { --fc-bg: rgba(60,200,255,0.15);  --fc-border: rgba(80,210,255,0.5); }
+    .flip-card:nth-child(5) { --fc-bg: rgba(255,200,60,0.15);  --fc-border: rgba(255,210,80,0.5); }
+    .flip-card:nth-child(6) { --fc-bg: rgba(255,80,130,0.18);  --fc-border: rgba(255,107,157,0.6); }
+
+    /* ── MENSAJE FINAL ── */
+    .message-section {
+      padding: 6rem 2rem 8rem;
+      text-align: center;
+      position: relative;
+    }
+    .message-card {
+      background: rgba(255,255,255,0.04);
+      border: 1px solid rgba(255,107,157,0.3);
+      border-radius: 24px;
+      padding: 3rem 2.5rem;
+      max-width: 600px;
+      margin: 0 auto;
+      backdrop-filter: blur(12px);
+      box-shadow: 0 0 60px rgba(255,77,126,0.15);
+      opacity: 0;
+      transform: translateY(50px);
+      transition: opacity 1s ease, transform 1s ease;
+    }
+    .message-card.visible { opacity: 1; transform: translateY(0); }
+
+    .message-card .quote {
+      font-family: 'Dancing Script', cursive;
+      font-size: clamp(1.5rem, 5vw, 2.4rem);
+      color: white;
+      line-height: 1.5;
+      margin-bottom: 2rem;
+    }
+    .message-card .signature {
+      font-family: 'Dancing Script', cursive;
+      font-size: 1.4rem;
+      color: var(--pink);
+    }
+
+    .final-hearts {
+      font-size: 2rem;
+      display: flex;
+      justify-content: center;
+      gap: 1rem;
+      margin-top: 2rem;
+    }
+    .final-hearts span { animation: heartbeat 1.4s ease-in-out infinite; }
+    .final-hearts span:nth-child(2) { animation-delay: 0.2s; font-size: 2.8rem; }
+    .final-hearts span:nth-child(3) { animation-delay: 0.4s; }
+
+    /* ── FOTO ── */
+    .photo-section {
+      padding: 4rem 2rem;
+      text-align: center;
+    }
+    .photo-frame {
+      width: min(320px, 85vw);
+      height: min(320px, 85vw);
+      margin: 0 auto;
+      border-radius: 50%;
+      border: 3px solid var(--pink);
+      box-shadow: 0 0 0 8px rgba(255,107,157,0.12), 0 0 60px rgba(255,107,157,0.3);
+      overflow: hidden;
+      opacity: 0;
+      transform: scale(0.8);
+      transition: opacity 0.8s ease, transform 0.8s ease, box-shadow 0.3s ease;
+    }
+    .photo-frame.visible { opacity: 1; transform: scale(1); }
+    .photo-frame:hover { box-shadow: 0 0 0 12px rgba(255,107,157,0.2), 0 0 80px rgba(255,107,157,0.5); }
+    .photo-frame img { width: 100%; height: 100%; object-fit: cover; display: block; }
+
+    /* ── ANIMACIONES UTILES ── */
+    @keyframes fadeSlideUp   { from { opacity: 0; transform: translateY(30px); } to { opacity: 1; transform: translateY(0); } }
+    @keyframes fadeSlideDown { from { opacity: 0; transform: translateY(-20px); } to { opacity: 1; transform: translateY(0); } }
+    @keyframes fadeIn        { from { opacity: 0; } to { opacity: 1; } }
+
+    /* ── SEPARADOR ── */
+    .divider {
+      width: 80px;
+      height: 2px;
+      background: linear-gradient(90deg, transparent, var(--pink), transparent);
+      margin: 0 auto 3rem;
+    }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width: 480px) {
+      .counter-card { padding: 1.5rem; min-width: 110px; }
+      .reason-card  { padding: 1rem 1.2rem; }
+    }
+
+    /* ── REPRODUCTOR ── */
+    .music-player {
+      position: fixed;
+      bottom: 1.5rem;
+      right: 1.5rem;
+      z-index: 999;
+      display: flex;
+      flex-direction: column;
+      align-items: flex-end;
+      gap: 0.6rem;
+    }
+
+    .music-expanded {
+      background: rgba(20, 0, 20, 0.85);
+      backdrop-filter: blur(16px);
+      border: 1px solid rgba(255,107,157,0.4);
+      border-radius: 20px;
+      padding: 1.2rem 1.4rem;
+      width: 240px;
+      box-shadow: 0 0 40px rgba(255,77,126,0.25);
+      display: none;
+      flex-direction: column;
+      gap: 0.9rem;
+      animation: popIn 0.3s cubic-bezier(0.34,1.56,0.64,1) forwards;
+    }
+    .music-expanded.open { display: flex; }
+
+    @keyframes popIn {
+      from { opacity: 0; transform: scale(0.8) translateY(10px); }
+      to   { opacity: 1; transform: scale(1) translateY(0); }
+    }
+
+    .music-song-info { text-align: center; }
+    .music-song-name {
+      font-family: 'Dancing Script', cursive;
+      font-size: 1.1rem;
+      color: white;
+      display: block;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    .music-artist {
+      font-size: 0.72rem;
+      color: var(--blush);
+      letter-spacing: 0.08em;
+      margin-top: 2px;
+    }
+
+    .music-visualizer {
+      display: flex;
+      align-items: flex-end;
+      justify-content: center;
+      gap: 3px;
+      height: 28px;
+    }
+    .music-bar {
+      width: 4px;
+      border-radius: 2px;
+      background: var(--pink);
+      animation: barDance 0.8s ease-in-out infinite;
+      transform-origin: bottom;
+    }
+    .music-bar:nth-child(2) { animation-delay: 0.1s; background: #ff9ec4; }
+    .music-bar:nth-child(3) { animation-delay: 0.2s; }
+    .music-bar:nth-child(4) { animation-delay: 0.05s; background: var(--gold); }
+    .music-bar:nth-child(5) { animation-delay: 0.15s; }
+    .music-bar:nth-child(6) { animation-delay: 0.25s; background: #ff9ec4; }
+    .music-bar:nth-child(7) { animation-delay: 0.08s; }
+    .music-bar.paused { animation-play-state: paused; height: 4px !important; }
+
+    @keyframes barDance {
+      0%, 100% { height: 6px; }
+      50%       { height: 24px; }
+    }
+    .music-bar:nth-child(1) { animation-duration: 0.7s; }
+    .music-bar:nth-child(3) { animation-duration: 0.9s; }
+    .music-bar:nth-child(5) { animation-duration: 0.65s; }
+    .music-bar:nth-child(7) { animation-duration: 0.85s; }
+
+    .music-progress-wrap {
+      width: 100%;
+      height: 4px;
+      background: rgba(255,255,255,0.1);
+      border-radius: 2px;
+      cursor: pointer;
+      position: relative;
+    }
+    .music-progress-bar {
+      height: 100%;
+      width: 0%;
+      background: linear-gradient(90deg, var(--pink), var(--gold));
+      border-radius: 2px;
+      transition: width 0.5s linear;
+      pointer-events: none;
+    }
+
+    .music-controls {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 1rem;
+    }
+    .music-btn {
+      background: none;
+      border: none;
+      color: var(--blush);
+      font-size: 1.1rem;
+      cursor: pointer;
+      padding: 0.3rem;
+      border-radius: 50%;
+      transition: color 0.2s, transform 0.2s;
+      line-height: 1;
+    }
+    .music-btn:hover { color: white; transform: scale(1.2); }
+    .music-btn.play-pause {
+      background: var(--rose);
+      color: white;
+      width: 38px; height: 38px;
+      font-size: 1rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 0 16px rgba(255,77,126,0.5);
+    }
+    .music-btn.play-pause:hover { background: var(--pink); transform: scale(1.1); }
+
+    .music-volume {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+    .music-volume span { font-size: 0.8rem; color: var(--blush); }
+    .music-volume input[type=range] {
+      -webkit-appearance: none;
+      appearance: none;
+      width: 80px; height: 3px;
+      border-radius: 2px;
+      background: rgba(255,255,255,0.15);
+      outline: none;
+      cursor: pointer;
+    }
+    .music-volume input[type=range]::-webkit-slider-thumb {
+      -webkit-appearance: none;
+      appearance: none;
+      width: 12px; height: 12px;
+      border-radius: 50%;
+      background: var(--pink);
+    }
+
+    .music-fab {
+      width: 52px; height: 52px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, var(--rose), var(--deep));
+      border: none;
+      color: white;
+      font-size: 1.4rem;
+      cursor: pointer;
+      box-shadow: 0 0 20px rgba(255,77,126,0.5);
+      transition: transform 0.3s, box-shadow 0.3s;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      animation: fabPulse 2s ease-in-out infinite;
+    }
+    .music-fab:hover { transform: scale(1.1); box-shadow: 0 0 35px rgba(255,77,126,0.7); }
+    @keyframes fabPulse {
+      0%, 100% { box-shadow: 0 0 20px rgba(255,77,126,0.5); }
+      50%       { box-shadow: 0 0 35px rgba(255,77,126,0.85); }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- PARTÍCULAS -->
+  <canvas id="particles"></canvas>
+
+  <!-- CORAZONES FLOTANTES -->
+  <div class="floating-hearts" id="floatingHearts"></div>
+
+  <!-- ── REPRODUCTOR DE MÚSICA ── -->
+  <div class="music-player" id="musicPlayer">
+    <div class="music-expanded" id="musicPanel">
+
+      <div class="music-song-info">
+        <span class="music-song-name" id="songName">Cargando...</span>
+        <div class="music-artist" id="songArtist">♫ música para nosotros</div>
+      </div>
+
+      <div class="music-visualizer" id="visualizer">
+        <div class="music-bar paused"></div>
+        <div class="music-bar paused"></div>
+        <div class="music-bar paused"></div>
+        <div class="music-bar paused"></div>
+        <div class="music-bar paused"></div>
+        <div class="music-bar paused"></div>
+        <div class="music-bar paused"></div>
+      </div>
+
+      <div class="music-progress-wrap" id="progressWrap">
+        <div class="music-progress-bar" id="progressBar"></div>
+      </div>
+
+      <div class="music-controls">
+        <button class="music-btn" id="prevBtn" title="Anterior">⏮</button>
+        <button class="music-btn play-pause" id="playBtn">▶</button>
+        <button class="music-btn" id="nextBtn" title="Siguiente">⏭</button>
+      </div>
+
+      <div class="music-volume">
+        <span>🔈</span>
+        <input type="range" id="volumeSlider" min="0" max="1" step="0.05" value="0.5">
+        <span>🔊</span>
+      </div>
+
+    </div>
+
+    <button class="music-fab" id="musicFab" title="Música">🎵</button>
+  </div>
+
+  <audio id="audioPlayer" preload="auto"></audio>
+
+  <div class="page">
+
+    <!-- ── HERO ── -->
+    <section class="hero">
+      <div class="crown">👑</div>
+      <p class="hero-subtitle">Llevamos juntos</p>
+      <h1 class="hero-title">4 Meses</h1>
+      <span class="big-heart">💖</span>
+      <p class="hero-tagline">y cada día me enamoro más de ti</p>
+
+      <div class="scroll-hint">
+        <span>Descubre</span>
+        <div class="scroll-arrow"></div>
+      </div>
+    </section>
+
+    <!-- ── CONTADOR ── -->
+    <section class="counter-section">
+      <h2 class="section-title" id="counterTitle">Lo que hemos vivido juntos</h2>
+      <div class="divider"></div>
+      <div class="counters">
+        <div class="counter-card" id="c1">
+          <span class="counter-num" id="dias">0</span>
+          <span class="counter-label">Días</span>
+        </div>
+        <div class="counter-card" id="c2">
+          <span class="counter-num" id="horas">0</span>
+          <span class="counter-label">Horas</span>
+        </div>
+        <div class="counter-card" id="c3">
+          <span class="counter-num" id="minutos">0</span>
+          <span class="counter-label">Minutos</span>
+        </div>
+        <div class="counter-card" id="c4">
+          <span class="counter-num">∞</span>
+          <span class="counter-label">Amor</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- ── FOTO ── -->
+    <section class="photo-section">
+      <h2 class="section-title visible" style="margin-bottom:2rem;">Nosotros 📸</h2>
+      <div class="divider"></div>
+      <div class="photo-frame">
+        <!-- Pon tu imagen en la misma carpeta que este archivo y cambia "foto.jpg" por su nombre -->
+        <img src="foto.jpg" alt="Nosotros" />
+      </div>
+    </section>
+
+    <!-- ── RAZONES ── -->
+    <section class="reasons-section">
+      <h2 class="section-title" id="reasonsTitle">Razones por las que te amo</h2>
+      <div class="divider"></div>
+      <div class="reasons-grid" id="reasonsGrid">
+        <div class="reason-card">
+          <span class="reason-emoji">🌅</span>
+          <p class="reason-text"><strong>Tu sonrisa</strong> ilumina cualquier lugar oscuro, no importa cuánto frío haya, contigo siempre hay calor.</p>
+        </div>
+        <div class="reason-card from-right">
+          <span class="reason-emoji">🧠</span>
+          <p class="reason-text"><strong>Tu inteligencia y curiosidad</strong> me sorprenden constantemente. Cada conversación contigo es un regalo.</p>
+        </div>
+        <div class="reason-card">
+          <span class="reason-emoji">🤝</span>
+          <p class="reason-text"><strong>Tu apoyo incondicional</strong> me hace sentir que puedo con todo. Eres mi red de seguridad favorita.</p>
+        </div>
+        <div class="reason-card from-right">
+          <span class="reason-emoji">😂</span>
+          <p class="reason-text"><strong>Tu sentido del humor</strong> hace que los momentos más simples se conviertan en los más especiales.</p>
+        </div>
+        <div class="reason-card">
+          <span class="reason-emoji">🎙️</span>
+          <p class="reason-text"><strong>Tu voz</strong> es lo primero que quiero escuchar por la mañana y lo último que quisiera oír por la noche. Eso no tiene precio.</p>
+        </div>
+        <div class="reason-card from-right">
+          <span class="reason-emoji">🌺</span>
+          <p class="reason-text"><strong>Tu corazón enorme</strong> que cuida a todos los que te rodean. Eres increíblemente especial.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ── MOMENTOS — tarjetas flip ── -->
+    <section class="moments-section">
+      <h2 class="section-title" id="momentsTitle">Nuestros momentos</h2>
+      <div class="divider"></div>
+      <div class="moments-grid" id="momentsGrid">
+
+        <div class="flip-card">
+          <div class="flip-inner">
+            <div class="flip-front">
+              <span class="fc-emoji">🎬</span>
+              <span class="fc-title">Películas</span>
+              <span class="fc-hint">hover para ver</span>
+            </div>
+            <div class="flip-back">
+              <span class="fc-back-emoji">🍿</span>
+              <p class="fc-desc">Ver películas juntos, cada uno en su casa, como si estuviéramos en la <em> misma cama </em>.</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="flip-card">
+          <div class="flip-inner">
+            <div class="flip-front">
+              <span class="fc-emoji">⏰</span>
+              <span class="fc-title">Tiempo</span>
+              <span class="fc-hint">hover para ver</span>
+            </div>
+            <div class="flip-back">
+              <span class="fc-back-emoji">📱</span>
+              <p class="fc-desc">Pasar tiempo contigo es mi parte <em>favorita</em> del día.</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="flip-card">
+          <div class="flip-inner">
+            <div class="flip-front">
+              <span class="fc-emoji">🌙</span>
+              <span class="fc-title">Noches</span>
+              <span class="fc-hint">hover para ver</span>
+            </div>
+            <div class="flip-back">
+              <span class="fc-back-emoji">🌙</span>
+              <p class="fc-desc">Las llamadas de noche duran poco y valen <em>todo</em>.</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="flip-card">
+          <div class="flip-inner">
+            <div class="flip-front">
+              <span class="fc-emoji">🎵</span>
+              <span class="fc-title">Música</span>
+              <span class="fc-hint">hover para ver</span>
+            </div>
+            <div class="flip-back">
+              <span class="fc-back-emoji">🎶</span>
+              <p class="fc-desc">Cada canción que escucho me recuerda a <em>ti</em>.</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="flip-card">
+          <div class="flip-inner">
+            <div class="flip-front">
+              <span class="fc-emoji">🤗</span>
+              <span class="fc-title">El día que...</span>
+              <span class="fc-hint">hover para ver</span>
+            </div>
+            <div class="flip-back">
+              <span class="fc-back-emoji">💞</span>
+              <p class="fc-desc">El día que por fin te tenga entre mis brazos va a ser el <em>mejor día</em> de mi vida.</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="flip-card">
+          <div class="flip-inner">
+            <div class="flip-front">
+              <span class="fc-emoji">💬</span>
+              <span class="fc-title">Charlas</span>
+              <span class="fc-hint">hover para ver</span>
+            </div>
+            <div class="flip-back">
+              <span class="fc-back-emoji">💕</span>
+              <p class="fc-desc">Podría hablar contigo <em>para siempre</em> y nunca cansarme.</p>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ── MENSAJE FINAL ── -->
+    <section class="message-section">
+      <h2 class="section-title" id="messageTitle">Para ti, hoy y siempre</h2>
+      <div class="divider"></div>
+      <div class="message-card" id="messageCard">
+        <p class="quote">
+          "Cuatro meses contigo han sido los más bonitos de mi vida.<br><br>
+          Cada día, aunque estemos lejos, confirma lo que ya sabía desde el primer momento:<br>
+          que elegirte fue la mejor decisión que he tomado.<br><br>
+          La distancia no cambia nada, solo hace que te quiera <em>más</em>.<br><br>
+          Gracias por existir, gracias por quedarte,<br>
+          gracias por ser <em>tú</em>."
+        </p>
+        <p class="signature">— Con todo mi amor 💕</p>
+        <div class="final-hearts">
+          <span>❤️</span>
+          <span>💖</span>
+          <span>❤️</span>
+        </div>
+      </div>
+    </section>
+
+  </div><!-- end .page -->
+
+  <script>
+    /* ── FECHA DE INICIO ── */
+    const startDate = new Date('2025-11-28T00:00:00');
+
+    /* ── CONTADOR EN VIVO ── */
+    function updateCounters() {
+      const now  = new Date();
+      const diff = now - startDate;
+      const totalMinutes = Math.floor(diff / 60000);
+      const totalHoras   = Math.floor(diff / 3600000);
+      const totalDias    = Math.floor(diff / 86400000);
+      document.getElementById('dias').textContent    = totalDias.toLocaleString('es');
+      document.getElementById('horas').textContent   = totalHoras.toLocaleString('es');
+      document.getElementById('minutos').textContent = totalMinutes.toLocaleString('es');
+    }
+    updateCounters();
+    setInterval(updateCounters, 30000);
+
+    /* ── CORAZONES FLOTANTES ── */
+    const heartsContainer = document.getElementById('floatingHearts');
+    const HEARTS = ['💕','💗','💓','💖','❤️','🩷','💞'];
+    function spawnHeart() {
+      const h = document.createElement('div');
+      h.className = 'fheart';
+      h.textContent = HEARTS[Math.floor(Math.random() * HEARTS.length)];
+      h.style.left     = Math.random() * 100 + 'vw';
+      h.style.fontSize = (0.8 + Math.random() * 1.6) + 'rem';
+      const dur = 6 + Math.random() * 10;
+      h.style.animationDuration = dur + 's';
+      h.style.animationDelay   = Math.random() * 4 + 's';
+      heartsContainer.appendChild(h);
+      setTimeout(() => h.remove(), (dur + 4) * 1000);
+    }
+    for (let i = 0; i < 18; i++) setTimeout(spawnHeart, i * 400);
+    setInterval(spawnHeart, 1200);
+
+    /* ── PARTÍCULAS DE BRILLO ── */
+    const canvas = document.getElementById('particles');
+    const ctx    = canvas.getContext('2d');
+    let particles = [];
+
+    function resizeCanvas() {
+      canvas.width  = window.innerWidth;
+      canvas.height = window.innerHeight;
+    }
+    resizeCanvas();
+    window.addEventListener('resize', resizeCanvas);
+
+    function createParticle() {
+      return {
+        x: Math.random() * canvas.width,
+        y: Math.random() * canvas.height,
+        r: Math.random() * 1.5 + 0.3,
+        alpha: Math.random(),
+        speed: Math.random() * 0.3 + 0.05,
+        dir: Math.random() * Math.PI * 2,
+        flicker: Math.random() * 0.02 + 0.005,
+      };
+    }
+
+    for (let i = 0; i < 120; i++) particles.push(createParticle());
+
+    function drawParticles() {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      particles.forEach(p => {
+        p.alpha += (Math.random() < 0.5 ? 1 : -1) * p.flicker;
+        p.alpha = Math.max(0, Math.min(1, p.alpha));
+        p.x += Math.cos(p.dir) * p.speed;
+        p.y += Math.sin(p.dir) * p.speed;
+        if (p.x < 0) p.x = canvas.width;
+        if (p.x > canvas.width) p.x = 0;
+        if (p.y < 0) p.y = canvas.height;
+        if (p.y > canvas.height) p.y = 0;
+
+        const color = Math.random() < 0.6 ? `rgba(255,107,157,${p.alpha})` : `rgba(255,204,128,${p.alpha})`;
+        ctx.beginPath();
+        ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
+        ctx.fillStyle = color;
+        ctx.fill();
+      });
+      requestAnimationFrame(drawParticles);
+    }
+    drawParticles();
+
+    /* ── SCROLL REVEAL ── */
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(e => {
+        if (e.isIntersecting) e.target.classList.add('visible');
+      });
+    }, { threshold: 0.15 });
+
+    document.querySelectorAll(
+      '.section-title, .counter-card, .reason-card, .flip-card, .photo-frame, .message-card'
+    ).forEach((el, i) => {
+      el.style.transitionDelay = (i % 4) * 0.12 + 's';
+      observer.observe(el);
+    });
+
+    /* ── FLIP EN MÓVIL (toque) ── */
+    document.querySelectorAll('.flip-card').forEach(card => {
+      card.addEventListener('click', () => card.classList.toggle('flipped'));
+    });
+
+    /* ── CURSOR TRAIL ── */
+    document.addEventListener('mousemove', e => {
+      if (Math.random() > 0.7) {
+        const t = document.createElement('div');
+        t.textContent = Math.random() < 0.5 ? '✨' : '💕';
+        t.style.cssText = `
+          position:fixed;left:${e.clientX}px;top:${e.clientY}px;
+          pointer-events:none;z-index:9999;font-size:1rem;
+          transform:translate(-50%,-50%);
+          animation:trailFade 0.8s ease forwards;`;
+        document.body.appendChild(t);
+        setTimeout(() => t.remove(), 800);
+      }
+    });
+    const style = document.createElement('style');
+    style.textContent = `@keyframes trailFade{0%{opacity:1;transform:translate(-50%,-50%) scale(1)}100%{opacity:0;transform:translate(-50%,-200%) scale(0.3)}}`;
+    document.head.appendChild(style);
+
+    /* ── REPRODUCTOR ── */
+    // Reemplaza las URLs con tus raw links de GitHub:
+    // https://raw.githubusercontent.com/TU_USUARIO/TU_REPO/main/cancion.mp3
+    const SONGS = [
+      {
+        name: "Mi Otra Mitad",
+        artist: "Dannylux",
+        src: "https://raw.githubusercontent.com/pndx451/musica2/main/cancion4.mp3"
+      },
+      {
+        name: "Nuestra Felicidad",
+        artist: "Dannylux",
+        src: "https://raw.githubusercontent.com/pndx451/musica2/main/cancion5.mp3"
+      },
+      {
+        name: "Gracias a Ti",
+        artist: "Dannylux",
+        src: "https://raw.githubusercontent.com/pndx451/musica2/main/cancion6.mp3"
+      },
+    ];
+
+    let currentTrack = 0;
+    let isPlaying = false;
+    const audio       = document.getElementById('audioPlayer');
+    const playBtn     = document.getElementById('playBtn');
+    const prevBtn     = document.getElementById('prevBtn');
+    const nextBtn     = document.getElementById('nextBtn');
+    const songName    = document.getElementById('songName');
+    const songArtist  = document.getElementById('songArtist');
+    const progressBar = document.getElementById('progressBar');
+    const progressWrap= document.getElementById('progressWrap');
+    const volumeSlider= document.getElementById('volumeSlider');
+    const visualizer  = document.getElementById('visualizer');
+    const bars        = visualizer.querySelectorAll('.music-bar');
+    const musicFab    = document.getElementById('musicFab');
+    const musicPanel  = document.getElementById('musicPanel');
+
+    function loadTrack(idx) {
+      const song = SONGS[idx];
+      audio.src  = song.src;
+      songName.textContent   = song.name;
+      songArtist.textContent = song.artist;
+      audio.load();
+    }
+
+    function togglePlay() {
+      if (isPlaying) {
+        audio.pause();
+        playBtn.textContent = '▶';
+        bars.forEach(b => b.classList.add('paused'));
+        musicFab.textContent = '🎵';
+        isPlaying = false;
+      } else {
+        audio.play().catch(() => {});
+        playBtn.textContent = '⏸';
+        bars.forEach(b => b.classList.remove('paused'));
+        musicFab.textContent = '🎶';
+        isPlaying = true;
+      }
+    }
+
+    function changeTrack(delta) {
+      currentTrack = (currentTrack + delta + SONGS.length) % SONGS.length;
+      loadTrack(currentTrack);
+      if (isPlaying) audio.play().catch(() => {});
+    }
+
+    audio.addEventListener('timeupdate', () => {
+      if (!audio.duration) return;
+      progressBar.style.width = (audio.currentTime / audio.duration * 100) + '%';
+    });
+
+    audio.addEventListener('ended', () => changeTrack(1));
+
+    progressWrap.addEventListener('click', e => {
+      const rect = progressWrap.getBoundingClientRect();
+      const ratio = (e.clientX - rect.left) / rect.width;
+      audio.currentTime = ratio * audio.duration;
+    });
+
+    volumeSlider.addEventListener('input', () => {
+      audio.volume = volumeSlider.value;
+    });
+
+    playBtn.addEventListener('click', togglePlay);
+    prevBtn.addEventListener('click', () => changeTrack(-1));
+    nextBtn.addEventListener('click', () => changeTrack(1));
+
+    musicFab.addEventListener('click', () => {
+      musicPanel.classList.toggle('open');
+      if (musicPanel.classList.contains('open') && !isPlaying) togglePlay();
+    });
+
+    audio.volume = 0.5;
+    loadTrack(0);
+
+  </script>
+</body>
+</html>
